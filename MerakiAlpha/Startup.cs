@@ -1,4 +1,6 @@
 using MerakiAlpha.Models;
+using MerakiAlpha.Models.Interfaces;
+using MerakiAlpha.Models.Servicios;
 using MerakiAlpha.Usuarios;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,9 +25,19 @@ namespace MerakiAlpha
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "CorsPolicy",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
             services.AddDbContext<MerakiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MerakiConnection"))
                 );
+            services.AddScoped<IPropietario, ServiciosPropietario>();
             services.AddControllers().AddJsonOptions(options => {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.DictionaryKeyPolicy = null;
@@ -51,6 +63,7 @@ namespace MerakiAlpha
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("CorsPolicy");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

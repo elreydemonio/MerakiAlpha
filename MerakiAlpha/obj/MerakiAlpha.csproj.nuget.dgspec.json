@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {}
+    "E:\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {
+    "E:\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
+        "projectUniqueName": "E:\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
         "projectName": "MerakiAlpha",
-        "projectPath": "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
+        "projectPath": "E:\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
         "packagesPath": "C:\\Users\\PERSONAL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\obj\\",
+        "outputPath": "E:\\MerakiAlpha\\MerakiAlpha\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -71,6 +71,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.4, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
