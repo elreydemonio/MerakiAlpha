@@ -1,25 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {}
+    "D:\\Github\\Pablo\\MerakiBackend1\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {
+    "D:\\Github\\Pablo\\MerakiBackend1\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
+        "projectUniqueName": "D:\\Github\\Pablo\\MerakiBackend1\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
         "projectName": "MerakiAlpha",
-        "projectPath": "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
-        "packagesPath": "C:\\Users\\PERSONAL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\obj\\",
+        "projectPath": "D:\\Github\\Pablo\\MerakiBackend1\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
+        "packagesPath": "C:\\Users\\Hp\\.nuget\\packages\\",
+        "outputPath": "D:\\Github\\Pablo\\MerakiBackend1\\MerakiAlpha\\MerakiAlpha\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\PERSONAL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -66,11 +64,19 @@
               "target": "Package",
               "version": "[5.0.4, )"
             },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.4, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -95,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }
