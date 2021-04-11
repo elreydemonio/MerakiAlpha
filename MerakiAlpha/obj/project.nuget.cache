@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aI9mBISlIz0rF6dd60nb2dhyXuG4CuVrKOy5wclz53U0HBlvnoD8T0XwjJRd83laxIdZZnmvMuGcUg8jbiqmnA==",
+  "dgSpecHash": "5FfAPydniejaE1e7mWA3oVtHwincArxaxnZtVVD35Hg02FPxed6q8OggNiy2yr3VK70r9czKLg2Ni4pQOD8Dvw==",
   "success": true,
-  "projectFilePath": "E:\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
+  "projectFilePath": "C:\\Users\\PERSONAL\\source\\repos\\MerakiAlpha\\MerakiAlpha\\MerakiAlpha.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PERSONAL\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\PERSONAL\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.4\\microsoft.aspnetcore.authentication.jwtbearer.5.0.4.nupkg.sha512",
