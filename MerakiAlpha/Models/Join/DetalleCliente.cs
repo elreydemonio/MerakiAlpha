@@ -18,5 +18,5 @@ namespace MerakiAlpha.Models.Join
         public String Direccion { get; set; }
     }
 
-    //Hola x3
+    //Holaaaaaaaa x3
 }
