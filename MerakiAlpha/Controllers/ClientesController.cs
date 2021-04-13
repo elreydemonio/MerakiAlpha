@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MerakiAlpha.Models;
 using MerakiAlpha.Models.Join;
 using MerakiAlpha.Usuarios;
-//Rama Pablo
+
 namespace MerakiAlpha.Controllers
 {
     [Route("api/[controller]")]
@@ -42,33 +42,20 @@ namespace MerakiAlpha.Controllers
                  Apellido = C.Apellido,
                  TipoDocumento = T.Descripcion,
                  NumeroDocumento = C.NumeroDocumento,
-                 IdRol = U.IdEstado,
+                 IdEstado = E.IdEstadoUsuario,
                  Estado = E.Descripcion,
-                 IdUsuario = U.idUsuario
+                 IdUsuario = U.Id,
+                 Direccion = C.Direccion
              }).ToListAsync();
 
             return clientes;
         }
 
-        // GET: api/Clientes/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Cliente>> GetCliente(int id)
-        {
-            var cliente = await _context.Clientes.FindAsync(id);
-
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-
-            return cliente;
-        }
-
         [HttpPut]
         [Route("EditarEstado/{id}")]
-        public async Task<ActionResult<Cliente>> EditarEstado(int? id)
+        public async Task<ActionResult<Cliente>> EditarEstado(string id)
         {
-            UsuarioIdentity usuario = await _context.UsuariosIdentity.FindAsync(id.Value);
+            UsuarioIdentity usuario = await _context.UsuariosIdentity.FindAsync(id);
             if (usuario.IdEstado == 1)
             {
                 int? estado = 2;
@@ -85,6 +72,8 @@ namespace MerakiAlpha.Controllers
             return NoContent();
         }
 
+
+
         [HttpGet]
         [Route("ListaDocumento")]
         public async Task<ActionResult<IEnumerable<TiposDocumento>>> GetListaTipoDocumento()
@@ -100,9 +89,8 @@ namespace MerakiAlpha.Controllers
         }
 
         // GET: api/Clientes/5
-        [HttpGet]
-        [Route("DetalleCliente/{id}")]
-        public async Task<ActionResult<DetalleCliente>> GetClientes(int? id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DetalleCliente>> GetCliente(int? id)
         {
             DetalleCliente Detallecliente = await
                            (from C in _context.Clientes
@@ -118,7 +106,8 @@ namespace MerakiAlpha.Controllers
                                 TipoDocumento = T.Descripcion,
                                 Apellido = C.Apellido,
                                 Correo = C.Correo,
-                                NumeroDocumento = C.NumeroDocumento
+                                NumeroDocumento = C.NumeroDocumento,
+                                Direccion = C.Direccion
                             }).FirstAsync();
             return Detallecliente;
         }
@@ -152,6 +141,18 @@ namespace MerakiAlpha.Controllers
             }
 
             return NoContent();
+        }
+
+        // GET: api/Clientes/5
+        [HttpGet]
+        [Route("DetalleCliente/{id}")]
+        public async Task<ActionResult<Cliente>> GetAngularCliente(int? id)
+        {
+            Cliente cliente;
+            cliente = await _context.Clientes.FindAsync(id.Value);
+            if (cliente == null)
+                return NotFound();
+            return cliente;
         }
 
         // POST: api/Clientes

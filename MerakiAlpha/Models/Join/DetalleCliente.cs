@@ -15,6 +15,7 @@ namespace MerakiAlpha.Models.Join
         public String Apellido { get; set; }
         public int NumeroDocumento { get; set; }
         public int Celular { get; set; }
+        public String Direccion { get; set; }
     }
 
     //Hola x3
