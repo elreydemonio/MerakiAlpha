@@ -1,17 +1,19 @@
 ﻿using MerakiAlpha.Usuarios;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using MerakiAlpha.Models.Join;
+using MerakiAlpha.Models;
+using Microsoft.EntityFrameworkCore;
 //Rama caice
 namespace MerakiAlpha.Controllers
 {
@@ -19,15 +21,18 @@ namespace MerakiAlpha.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
+        public const string SessionKeyName = "_Name";
         private readonly UserManager<UsuarioIdentity> _userManager;
         private readonly SignInManager<UsuarioIdentity> _signInManager;
         private readonly ConfiguracionGlobal _configuracionGlobal;
+        private readonly MerakiContext _context;
         public UsuariosController(UserManager<UsuarioIdentity> userManager,
-            SignInManager<UsuarioIdentity> signInManager, IOptions<ConfiguracionGlobal> configuracionGlobal)
+            SignInManager<UsuarioIdentity> signInManager, IOptions<ConfiguracionGlobal> configuracionGlobal, MerakiContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuracionGlobal = configuracionGlobal.Value;
+            _context = context;
         }
         [HttpPost]
         [Route("Registro")]
@@ -66,7 +71,8 @@ namespace MerakiAlpha.Controllers
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UsuarioID", usuario.Id.ToString())
+                        new Claim("UsuarioID", usuario.Id.ToString()),
+                        new Claim("Rol", usuario.IdRol.ToString()),
                     }),
                     Expires = DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuracionGlobal.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
@@ -87,13 +93,15 @@ namespace MerakiAlpha.Controllers
         [Route("Perfil")]
         [Authorize]
         //GET : /api/UserProfile
-        public async Task<Object> ObtenerPerfilUsuario()
+        public async Task<object> ObtenerPerfilUsuario()
         {
             string usuarioId = User.Claims.First(c => c.Type == "UsuarioID").Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId).ConfigureAwait(false);
-
+           
             if (usuario != null)
             {
+                HttpContext.Session.SetString(SessionKeyName, usuario.Id);
+                var vergil = HttpContext.Session.GetString("IdUsuario");
                 return new
                 {
                     usuario.Nombre,
@@ -102,14 +110,41 @@ namespace MerakiAlpha.Controllers
                     usuario.IdEstado,
                     usuario.IdRol,
                     usuario.idUsuario
-                };
+                };             
             }
             else
             {
                 return BadRequest(new { mensaje = "No se encuentra el usuario" });
             }
-
         }
-
+        [HttpGet]
+        [Route("Perfil/Propietario")]
+        [Authorize]
+        //GET : /api/UserProfile
+        public async Task<PropietarioDetalleJoin> ObtenerPerfilPropietario()
+        {
+            string usuarioId = User.Claims.First(c => c.Type == "UsuarioID").Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId).ConfigureAwait(false);
+            PropietarioDetalleJoin Deallepropietario = await
+                                                       (from C in _context.Propietarios
+                                                        join G in _context.Generos on C.IdGenero equals G.IdGenero
+                                                        join T in _context.TiposDocumentos on C.IdTipoDocumento equals T.IdTipoDocumento
+                                                        join U in _context.UsuariosIdentity on C.Correo equals U.Email
+                                                        join E in _context.EstadoUsuarios on U.IdEstado equals E.IdEstadoUsuario
+                                                        where C.Correo == usuario.Email
+                                                        select new PropietarioDetalleJoin
+                                                        {
+                                                            IdPropietario = C.IdPropietario,
+                                                            Genero = G.Descripcion,
+                                                            Direccion = C.Direccion,
+                                                            Celular = C.Celular,
+                                                            Nombre = C.Nombre,
+                                                            TipoDoumento = T.Descripcion,
+                                                            Apellido = C.Apellido,
+                                                            Correo = C.Correo,
+                                                            NumeroDocumento = C.NumeroDocumento
+                                                        }).FirstAsync();
+            return Deallepropietario;
+        }
     }
 }

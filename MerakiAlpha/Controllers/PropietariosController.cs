@@ -28,6 +28,7 @@ namespace MerakiAlpha.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PropietarioDetalleJoin>> GetPropietario(int? id)
         {
+            var vergil = HttpContext.Session.GetString("IdUsuario");
             var propietario = await _context.Detallepropitario(id.Value);
             if (propietario == null)
                 return NotFound();

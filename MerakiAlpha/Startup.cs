@@ -39,6 +39,14 @@ namespace MerakiAlpha
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddDbContext<MerakiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MerakiConnection"))
                 );
@@ -117,7 +125,7 @@ namespace MerakiAlpha
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
