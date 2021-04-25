@@ -13,66 +13,39 @@ namespace MerakiAlpha.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientesController : ControllerBase
+    public class ConductoresController : ControllerBase
     {
         private readonly MerakiContext _context;
 
-        public ClientesController(MerakiContext context)
+        public ConductoresController(MerakiContext context)
         {
             _context = context;
         }
 
-        //Holaaaaaaa
-
-        // GET: api/Clientes
+        // GET: api/Conductores
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ListCliente>>> GetClientes()
+        public async Task<ActionResult<IEnumerable<ListConductor>>> GetConductores()
         {
-            ActionResult<IEnumerable<ListCliente>> clientes = await
-            (from C in _context.Clientes
+            ActionResult<IEnumerable<ListConductor>> conductores = await
+            (from C in _context.Conductores
              join G in _context.Generos on C.IdGenero equals G.IdGenero
              join T in _context.TiposDocumentos on C.IdTipoDocumento equals T.IdTipoDocumento
              join U in _context.UsuariosIdentity on C.Correo equals U.Email
-             join E in _context.EstadoUsuarios on U.IdEstado equals E.IdEstadoUsuario
-             select new ListCliente
+             select new ListConductor
              {
-                 IdCliente = C.IdCliente,
+                 IdConductor = C.IdConductor,
                  Genero = G.Descripcion,
                  Nombre = C.Nombre,
                  Apellido = C.Apellido,
                  TipoDocumento = T.Descripcion,
                  NumeroDocumento = C.NumeroDocumento,
-                 IdEstado = E.IdEstadoUsuario,
-                 Estado = E.Descripcion,
                  IdUsuario = U.Id,
-                 Direccion = C.Direccion
+                 Direccion = C.Direccion,
+                 FechaInicio = C.FechaInicio
              }).ToListAsync();
 
-            return clientes;
+            return conductores;
         }
-
-        [HttpPut]
-        [Route("EditarEstado/{id}")]
-        public async Task<ActionResult<Cliente>> EditarEstado(string id)
-        {
-            UsuarioIdentity usuario = await _context.UsuariosIdentity.FindAsync(id);
-            if (usuario.IdEstado == 1)
-            {
-                int? estado = 2;
-                usuario.IdEstado = estado.Value;
-                _context.UsuariosIdentity.Update(usuario);
-            }
-            else if (usuario.IdEstado == 2)
-            {
-                int? estado = 1;
-                usuario.IdEstado = estado.Value;
-                _context.UsuariosIdentity.Update(usuario);
-            }
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
-
 
         [HttpGet]
         [Route("ListaDocumento")]
@@ -88,18 +61,18 @@ namespace MerakiAlpha.Controllers
             return await _context.Generos.ToListAsync();
         }
 
-        // GET: api/Clientes/5
+        // GET: api/Conductores/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DetalleCliente>> GetCliente(int? id)
+        public async Task<ActionResult<DetalleConductor>> GetConductores(int? id)
         {
-            DetalleCliente Detallecliente = await
-                           (from C in _context.Clientes
+            DetalleConductor Detalleconductor = await
+                           (from C in _context.Conductores
                             join G in _context.Generos on C.IdGenero equals G.IdGenero
                             join T in _context.TiposDocumentos on C.IdTipoDocumento equals T.IdTipoDocumento
-                            where C.IdCliente == id
-                            select new DetalleCliente
+                            where C.IdConductor == id
+                            select new DetalleConductor
                             {
-                                IdCliente = C.IdCliente,
+                                IdConductor = C.IdConductor,
                                 Genero = G.Descripcion,
                                 Celular = C.Celular,
                                 Nombre = C.Nombre,
@@ -107,22 +80,26 @@ namespace MerakiAlpha.Controllers
                                 Apellido = C.Apellido,
                                 Correo = C.Correo,
                                 NumeroDocumento = C.NumeroDocumento,
-                                Direccion = C.Direccion
+                                Direccion = C.Direccion,
+                                FechaInicio = C.FechaInicio,
+                                FechaFin = C.FechaFin,
+                                FotoConductor = C.FotoConductor,
+                                CodigoV = C.CodigoV
                             }).FirstAsync();
-            return Detallecliente;
+            return Detalleconductor;
         }
 
-        // PUT: api/Clientes/5
+        // PUT: api/Conductores/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
+        public async Task<IActionResult> PutConductore(int id, Conductore conductore)
         {
-            if (id != cliente.IdCliente)
+            if (id != conductore.IdConductor)
             {
                 return BadRequest();
             }
 
-            _context.Entry(cliente).State = EntityState.Modified;
+            _context.Entry(conductore).State = EntityState.Modified;
 
             try
             {
@@ -130,7 +107,7 @@ namespace MerakiAlpha.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClienteExists(id))
+                if (!ConductoreExists(id))
                 {
                     return NotFound();
                 }
@@ -143,48 +120,48 @@ namespace MerakiAlpha.Controllers
             return NoContent();
         }
 
-        // GET: api/Clientes/5
+        // GET: api/Conductores/5
         [HttpGet]
-        [Route("DetalleCliente/{id}")]
-        public async Task<ActionResult<Cliente>> GetAngularCliente(int? id)
+        [Route("DetalleConductor/{id}")]
+        public async Task<ActionResult<Conductore>> GetAngularConductor(int? id)
         {
-            Cliente cliente;
-            cliente = await _context.Clientes.FindAsync(id.Value);
-            if (cliente == null)
+            Conductore conductor;
+            conductor = await _context.Conductores.FindAsync(id.Value);
+            if (conductor == null)
                 return NotFound();
-            return cliente;
+            return conductor;
         }
 
-        // POST: api/Clientes
+        // POST: api/Conductores
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        public async Task<ActionResult<Conductore>> PostConductore(Conductore conductore)
         {
-            _context.Clientes.Add(cliente);
+            _context.Conductores.Add(conductore);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCliente", new { id = cliente.IdCliente }, cliente);
+            return CreatedAtAction("GetConductore", new { id = conductore.IdConductor }, conductore);
         }
 
-        // DELETE: api/Clientes/5
+        // DELETE: api/Conductores/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCliente(int id)
+        public async Task<IActionResult> DeleteConductore(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null)
+            var conductore = await _context.Conductores.FindAsync(id);
+            if (conductore == null)
             {
                 return NotFound();
             }
 
-            _context.Clientes.Remove(cliente);
+            _context.Conductores.Remove(conductore);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ClienteExists(int id)
+        private bool ConductoreExists(int id)
         {
-            return _context.Clientes.Any(e => e.IdCliente == id);
+            return _context.Conductores.Any(e => e.IdConductor == id);
         }
     }
 }
