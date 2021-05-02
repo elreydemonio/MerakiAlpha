@@ -84,20 +84,17 @@ namespace MerakiAlpha.Controllers
             string codigoV = token.Substring(0, longitud);
             vehiculo.CodigoV = codigoV;
             vehiculo.IdPropietario = id;
-            string fotoVpost = this.fotoV;
+            string Fotov = Path.GetFileName(vehiculo.FotoV);
+            string Seguro = Path.GetFileName(vehiculo.SeguroCarga);
+            string soat = Path.GetFileName(vehiculo.Soat);
+            string tecnomecanica = Path.GetFileName(vehiculo.TecnoMecanica);
+            vehiculo.FotoV = Fotov;
+            vehiculo.SeguroCarga = Seguro;
+            vehiculo.Soat = soat;
+            vehiculo.TecnoMecanica = tecnomecanica;
             _context.Vehiculos.Add(vehiculo);
             try
             {
-                string Fotov = Path.GetFileName(vehiculo.FotoV);
-                string Seguro = Path.GetFileName(vehiculo.SeguroCarga);
-                string soat = Path.GetFileName(vehiculo.Soat);
-                string tecnomecanica = Path.GetFileName(vehiculo.TecnoMecanica);
-                var infoFotov = new FileInfo(Fotov);
-                string move = $"E:\\GitHub\\Sebastian\\MerakiFrontEnd\\src\\assets";
-                System.IO.File.Copy(Fotov, move);
-                System.IO.File.Copy(Seguro, move);
-                System.IO.File.Copy(soat, move);
-                System.IO.File.Copy(tecnomecanica, move);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
@@ -119,7 +116,7 @@ namespace MerakiAlpha.Controllers
         public async Task<IActionResult> imagenes(IFormFile File)
         {
             var files = Request.Form.Files[0];
-            string move = $"E:\\GitHub\\Sebastian\\MerakiFrontEnd\\src\\assets";
+            string move = $"E:\\GitHub\\Sebastian\\MerakiFrontEnd\\src\\assets\\img";
             using (var fileStream = new FileStream(Path.Combine(move, File.FileName), FileMode.Create, FileAccess.Write))
             {
                 await File.CopyToAsync(fileStream);
