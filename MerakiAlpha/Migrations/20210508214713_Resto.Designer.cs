@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MerakiAlpha.Migrations
 {
     [DbContext(typeof(MerakiContext))]
-    [Migration("20210404042851_Migracion Completa")]
-    partial class MigracionCompleta
+    [Migration("20210508214713_Resto")]
+    partial class Resto
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,6 +65,21 @@ namespace MerakiAlpha.Migrations
                     b.HasIndex("IdTipoDocumentoNavigationIdTipoDocumento");
 
                     b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("MerakiAlpha.Models.Color", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Colores");
                 });
 
             modelBuilder.Entity("MerakiAlpha.Models.Conductore", b =>
@@ -173,6 +188,21 @@ namespace MerakiAlpha.Migrations
                     b.HasKey("IdGenero");
 
                     b.ToTable("Generos");
+                });
+
+            modelBuilder.Entity("MerakiAlpha.Models.Marca", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Marcas");
                 });
 
             modelBuilder.Entity("MerakiAlpha.Models.Propietario", b =>
@@ -369,11 +399,17 @@ namespace MerakiAlpha.Migrations
                     b.Property<int>("Cilindraje")
                         .HasColumnType("int");
 
-                    b.Property<string>("Color")
-                        .HasColumnType("varchar(15)");
-
                     b.Property<string>("FotoV")
                         .HasColumnType("varchar(300)");
+
+                    b.Property<int?>("IdColorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdMarca")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdMarcasId")
+                        .HasColumnType("int");
 
                     b.Property<int>("IdPropietario")
                         .HasColumnType("int");
@@ -386,9 +422,6 @@ namespace MerakiAlpha.Migrations
 
                     b.Property<int?>("IdTipoVehiculoNavigationIdTipoVehiculo")
                         .HasColumnType("int");
-
-                    b.Property<string>("Marca")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Modelo")
                         .HasColumnType("nvarchar(max)");
@@ -405,7 +438,14 @@ namespace MerakiAlpha.Migrations
                     b.Property<string>("TecnoMecanica")
                         .HasColumnType("varchar(300)");
 
+                    b.Property<int>("idColor")
+                        .HasColumnType("int");
+
                     b.HasKey("CodigoV");
+
+                    b.HasIndex("IdColorId");
+
+                    b.HasIndex("IdMarcasId");
 
                     b.HasIndex("IdPropietarioNavigationIdPropietario");
 
@@ -574,6 +614,14 @@ namespace MerakiAlpha.Migrations
 
             modelBuilder.Entity("MerakiAlpha.Models.Vehiculo", b =>
                 {
+                    b.HasOne("MerakiAlpha.Models.Color", "IdColor")
+                        .WithMany("Colores")
+                        .HasForeignKey("IdColorId");
+
+                    b.HasOne("MerakiAlpha.Models.Marca", "IdMarcas")
+                        .WithMany("Marcas")
+                        .HasForeignKey("IdMarcasId");
+
                     b.HasOne("MerakiAlpha.Models.Propietario", "IdPropietarioNavigation")
                         .WithMany("Vehiculos")
                         .HasForeignKey("IdPropietarioNavigationIdPropietario");
@@ -581,6 +629,10 @@ namespace MerakiAlpha.Migrations
                     b.HasOne("MerakiAlpha.Models.TipoVehiculo", "IdTipoVehiculoNavigation")
                         .WithMany("Vehiculos")
                         .HasForeignKey("IdTipoVehiculoNavigationIdTipoVehiculo");
+
+                    b.Navigation("IdColor");
+
+                    b.Navigation("IdMarcas");
 
                     b.Navigation("IdPropietarioNavigation");
 
@@ -607,6 +659,11 @@ namespace MerakiAlpha.Migrations
                     b.Navigation("Servicios");
                 });
 
+            modelBuilder.Entity("MerakiAlpha.Models.Color", b =>
+                {
+                    b.Navigation("Colores");
+                });
+
             modelBuilder.Entity("MerakiAlpha.Models.Conductore", b =>
                 {
                     b.Navigation("Servicios");
@@ -629,6 +686,11 @@ namespace MerakiAlpha.Migrations
                     b.Navigation("Conductores");
 
                     b.Navigation("Propietarios");
+                });
+
+            modelBuilder.Entity("MerakiAlpha.Models.Marca", b =>
+                {
+                    b.Navigation("Marcas");
                 });
 
             modelBuilder.Entity("MerakiAlpha.Models.Propietario", b =>

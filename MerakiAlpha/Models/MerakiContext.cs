@@ -29,6 +29,8 @@ namespace MerakiAlpha.Models
         public DbSet<TiposDocumento> TiposDocumentos { get; set; }
         public DbSet<TipoVehiculo> TipoVehiculos { get; set; }
         public DbSet<Vehiculo> Vehiculos { get; set; }
+        public DbSet<Marca> Marcas { get; set; }
+        public DbSet<Color> Colores { get; set; }
 
     }
 }

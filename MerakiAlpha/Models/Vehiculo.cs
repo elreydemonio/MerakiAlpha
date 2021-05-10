@@ -16,10 +16,9 @@ namespace MerakiAlpha.Models
         }
         [Key]
         public string CodigoV { get; set; }
-        public string Marca { get; set; }
+        public int IdMarca { get; set; }
         public string Modelo { get; set; }
-        [Column(TypeName = "varchar(15)")]
-        public string Color { get; set; }
+        public int idColor { get; set; }
         public int Cilindraje { get; set; }
         public string Soat { get; set; }
         [Column(TypeName = "varchar(300)")]
@@ -35,6 +34,8 @@ namespace MerakiAlpha.Models
 
         public virtual Propietario IdPropietarioNavigation { get; set; }
         public virtual TipoVehiculo IdTipoVehiculoNavigation { get; set; }
+        public virtual Marca IdMarcas { get; set; }
+        public virtual Color IdColor { get; set; }
         public virtual ICollection<Conductore> Conductores { get; set; }
     }
 }

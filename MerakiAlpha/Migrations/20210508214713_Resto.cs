@@ -2,10 +2,18 @@
 
 namespace MerakiAlpha.Migrations
 {
-    public partial class RelacionesUsuarios : Migration
+    public partial class Resto : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_AspNetUsers_EstadoUsuarios_IdEstadoNavigationIdEstadoUsuario",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_AspNetUsers_Roles_IdRolNavigationIdRol",
+                table: "AspNetUsers");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -43,6 +51,16 @@ namespace MerakiAlpha.Migrations
             migrationBuilder.RenameTable(
                 name: "AspNetUsers",
                 newName: "UsuariosIdentity");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_AspNetUsers_IdRolNavigationIdRol",
+                table: "UsuariosIdentity",
+                newName: "IX_UsuariosIdentity_IdRolNavigationIdRol");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_AspNetUsers_IdEstadoNavigationIdEstadoUsuario",
+                table: "UsuariosIdentity",
+                newName: "IX_UsuariosIdentity_IdEstadoNavigationIdEstadoUsuario");
 
             migrationBuilder.AlterColumn<int>(
                 name: "idUsuario",
@@ -114,58 +132,10 @@ namespace MerakiAlpha.Migrations
                 oldMaxLength: 256,
                 oldNullable: true);
 
-            migrationBuilder.AddColumn<int>(
-                name: "IdEstadoNavigationIdEstadoUsuario",
-                table: "UsuariosIdentity",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "IdRolNavigationIdRol",
-                table: "UsuariosIdentity",
-                type: "int",
-                nullable: true);
-
             migrationBuilder.AddPrimaryKey(
                 name: "PK_UsuariosIdentity",
                 table: "UsuariosIdentity",
                 column: "Id");
-
-            migrationBuilder.CreateTable(
-                name: "EstadoUsuarios",
-                columns: table => new
-                {
-                    IdEstadoUsuario = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EstadoUsuarios", x => x.IdEstadoUsuario);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    IdRol = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.IdRol);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsuariosIdentity_IdEstadoNavigationIdEstadoUsuario",
-                table: "UsuariosIdentity",
-                column: "IdEstadoNavigationIdEstadoUsuario");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsuariosIdentity_IdRolNavigationIdRol",
-                table: "UsuariosIdentity",
-                column: "IdRolNavigationIdRol");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UsuariosIdentity_EstadoUsuarios_IdEstadoNavigationIdEstadoUsuario",
@@ -194,35 +164,23 @@ namespace MerakiAlpha.Migrations
                 name: "FK_UsuariosIdentity_Roles_IdRolNavigationIdRol",
                 table: "UsuariosIdentity");
 
-            migrationBuilder.DropTable(
-                name: "EstadoUsuarios");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
-
             migrationBuilder.DropPrimaryKey(
                 name: "PK_UsuariosIdentity",
-                table: "UsuariosIdentity");
-
-            migrationBuilder.DropIndex(
-                name: "IX_UsuariosIdentity_IdEstadoNavigationIdEstadoUsuario",
-                table: "UsuariosIdentity");
-
-            migrationBuilder.DropIndex(
-                name: "IX_UsuariosIdentity_IdRolNavigationIdRol",
-                table: "UsuariosIdentity");
-
-            migrationBuilder.DropColumn(
-                name: "IdEstadoNavigationIdEstadoUsuario",
-                table: "UsuariosIdentity");
-
-            migrationBuilder.DropColumn(
-                name: "IdRolNavigationIdRol",
                 table: "UsuariosIdentity");
 
             migrationBuilder.RenameTable(
                 name: "UsuariosIdentity",
                 newName: "AspNetUsers");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_UsuariosIdentity_IdRolNavigationIdRol",
+                table: "AspNetUsers",
+                newName: "IX_AspNetUsers_IdRolNavigationIdRol");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_UsuariosIdentity_IdEstadoNavigationIdEstadoUsuario",
+                table: "AspNetUsers",
+                newName: "IX_AspNetUsers_IdEstadoNavigationIdEstadoUsuario");
 
             migrationBuilder.AlterColumn<int>(
                 name: "idUsuario",
@@ -458,6 +416,22 @@ namespace MerakiAlpha.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_EstadoUsuarios_IdEstadoNavigationIdEstadoUsuario",
+                table: "AspNetUsers",
+                column: "IdEstadoNavigationIdEstadoUsuario",
+                principalTable: "EstadoUsuarios",
+                principalColumn: "IdEstadoUsuario",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_Roles_IdRolNavigationIdRol",
+                table: "AspNetUsers",
+                column: "IdRolNavigationIdRol",
+                principalTable: "Roles",
+                principalColumn: "IdRol",
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }

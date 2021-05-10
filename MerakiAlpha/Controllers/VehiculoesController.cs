@@ -28,6 +28,12 @@ namespace MerakiAlpha.Controllers
         {
             return await _context.Vehiculos.ToListAsync();
         }
+        [HttpGet]
+        [Route("Tipovehiculos")]
+        public async Task<ActionResult<IEnumerable<TipoVehiculo>>> GetTipoVechiuslo()
+        {
+            return await _context.TipoVehiculos.ToListAsync();
+        }
 
         // GET: api/Vehiculoes/5
         [HttpGet("{id}")]
@@ -45,6 +51,7 @@ namespace MerakiAlpha.Controllers
 
         // PUT: api/Vehiculoes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVehiculo(string id, Vehiculo vehiculo)
         {
@@ -52,8 +59,16 @@ namespace MerakiAlpha.Controllers
             {
                 return BadRequest();
             }
+            string Fotov = Path.GetFileName(vehiculo.FotoV);
+            string Seguro = Path.GetFileName(vehiculo.SeguroCarga);
+            string soat = Path.GetFileName(vehiculo.Soat);
+            string tecnomecanica = Path.GetFileName(vehiculo.TecnoMecanica);
+            vehiculo.FotoV = Fotov;
+            vehiculo.SeguroCarga = Seguro;
+            vehiculo.Soat = soat;
+            vehiculo.TecnoMecanica = tecnomecanica;
 
-            _context.Entry(vehiculo).State = EntityState.Modified;
+            _context.Vehiculos.Update(vehiculo);
 
             try
             {
